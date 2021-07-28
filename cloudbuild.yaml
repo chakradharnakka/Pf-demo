@@ -1,0 +1,4 @@
+steps:
+- name: 'gcr.io/cloud-builders/gsutil'
+  args: ['cp', '-r', 'k8s/*', 'gs://identity-pingfed-lab-ef24f2-pf-manifests']
+
