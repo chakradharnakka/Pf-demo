@@ -119,7 +119,7 @@ spec:
     spec:
       containers:
       - name: pingfederate
-        image: gcr.io/identity-pingfed-lab-ef24f2/sample-httpd:3ca1799
+        image: pingidentity/pingfederate:edge
         ports:        
         - containerPort: 9031
         volumeMounts:
@@ -195,7 +195,7 @@ spec:
         - secretRef:
             name: devops-secret
             optional: true
-        image: gcr.io/identity-pingfed-lab-ef24f2/sample-httpd:3ca1799
+        image: pingidentity/pingfederate:edge
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 1

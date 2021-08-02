@@ -104,7 +104,7 @@ spec:
     spec:
       containers:
       - name: pingfederate
-        image: gcr.io/identity-pingfed-lab-ef24f2/sample-httpd:3ca1799
+        image: pingidentity/pingfederate:edge
         ports:        
         - containerPort: 9031
         volumeMounts:
