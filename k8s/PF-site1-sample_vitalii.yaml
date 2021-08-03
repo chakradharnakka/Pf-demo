@@ -4,7 +4,7 @@ data:
   CLUSTER_NAME: na-northeast1
   ## CHANGEME
   # points to local pingfederate cluster and external name pingfederate-cluster in opposite k8s cluster
-  DNS_QUERY_LOCATION: "pingfederate-cluster.na-northeast1.svc.clusterset.local,pingfederate-cluster.us-central1.svc.clusterset.local"
+  DNS_QUERY_LOCATION: "pingfederate-cluster.spin-test-east.svc.clusterset.local,pingfederate-cluster.spin-test-west.svc.clusterset.local"
   DNS_RECORD_TYPE: A
   OPERATIONAL_MODE: CLUSTERED_CONSOLE
   PING_IDENTITY_ACCEPT_EULA: "YES"
@@ -14,6 +14,7 @@ data:
 kind: ConfigMap
 metadata:
   name: pingfederate-admin-environment-variables
+  namespace: spin-test-east
 ---
 apiVersion: v1
 data:
@@ -21,7 +22,7 @@ data:
   CLUSTER_NAME: na-northeast1
   ## CHANGEME
   # points to local pingfederate cluster and external name pingfederate-cluster in opposite k8s cluster
-  DNS_QUERY_LOCATION: "pingfederate-cluster.na-northeast1.svc.clusterset.local,pingfederate-cluster.us-central1.svc.clusterset.local"
+  DNS_QUERY_LOCATION: "pingfederate-cluster.spin-test-east.svc.clusterset.local,pingfederate-cluster.spin-test-west.svc.clusterset.local"
   DNS_RECORD_TYPE: A
   OPERATIONAL_MODE: CLUSTERED_ENGINE
   PING_IDENTITY_ACCEPT_EULA: "YES"
@@ -31,12 +32,14 @@ data:
 kind: ConfigMap
 metadata:
   name: pingfederate-engine-environment-variables
+  namespace: spin-test-east
 ---
 apiVersion: v1
 kind: Service
 metadata:
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  namespace: spin-test-east
   labels:
     role: pingfederate
   name: pingfederate-cluster
@@ -56,6 +59,7 @@ apiVersion: net.gke.io/v1
 kind: ServiceExport
 metadata:
   name: pingfederate-cluster
+  namespace: spin-test-east
 ---
 apiVersion: v1
 kind: Service
@@ -64,6 +68,7 @@ metadata:
     role: pingfederate
     tier: engine
   name: pingfederate
+  namespace: spin-test-east
 spec:
   ports:
   - name: https
@@ -79,6 +84,7 @@ metadata:
     role: pingfederate
     tier: console
   name: pingfederate-admin
+  namespace: spin-test-east
 spec:
   ports:
   - name: pf-console
@@ -94,6 +100,7 @@ metadata:
   labels:
     role: pingfederate
     tier: engine
+  namespace: spin-test-east
 spec:
   replicas: 2
   selector:
@@ -172,6 +179,7 @@ metadata:
     role: pingfederate
     tier: console
   name: pingfederate-admin
+  namespace: spin-test-east
 spec:
   replicas: 1
   selector:

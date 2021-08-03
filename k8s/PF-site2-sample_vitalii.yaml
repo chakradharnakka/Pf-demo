@@ -4,7 +4,7 @@ data:
   CLUSTER_NAME: us-central1
   ## CHANGEME
   # points to local pingfederate cluster and external name pingfederate-cluster in opposite k8s cluster
-  DNS_QUERY_LOCATION: "pingfederate-cluster.us-central1.svc.clusterset.local,pingfederate-cluster.na-northeast1.svc.clusterset.local"
+  DNS_QUERY_LOCATION: "pingfederate-cluster.spin-test-west.svc.clusterset.local,pingfederate-cluster.spin-test-east.svc.clusterset.local"
   DNS_RECORD_TYPE: A
   OPERATIONAL_MODE: CLUSTERED_CONSOLE
   PING_IDENTITY_ACCEPT_EULA: "YES"
@@ -14,6 +14,7 @@ data:
 kind: ConfigMap
 metadata:
   name: pingfederate-admin-environment-variables
+  namespace: spin-test-west
 ---
 apiVersion: v1
 data:
@@ -21,7 +22,7 @@ data:
   CLUSTER_NAME: us-central1
   ## CHANGEME
   # points to local pingfederate cluster and external name pingfederate-cluster in opposite k8s cluster
-  DNS_QUERY_LOCATION: "pingfederate-cluster.us-central1.svc.clusterset.local,pingfederate-cluster.na-northeast1.svc.clusterset.local"
+  DNS_QUERY_LOCATION: "pingfederate-cluster.spin-test-west.svc.clusterset.local,pingfederate-cluster.spin-test-east.svc.clusterset.local"
   DNS_RECORD_TYPE: A
   OPERATIONAL_MODE: CLUSTERED_ENGINE
   PING_IDENTITY_ACCEPT_EULA: "YES"
@@ -31,6 +32,7 @@ data:
 kind: ConfigMap
 metadata:
   name: pingfederate-engine-environment-variables
+  namespace: spin-test-west
 ---
 apiVersion: v1
 kind: Service
@@ -40,6 +42,7 @@ metadata:
   labels:
     role: pingfederate
   name: pingfederate-cluster
+  namespace: spin-test-west
 spec:
   clusterIP: None
   ports:
@@ -56,6 +59,7 @@ apiVersion: net.gke.io/v1
 kind: ServiceExport
 metadata:
   name: pingfederate-cluster
+  namespace: spin-test-west
 ---
 apiVersion: v1
 kind: Service
@@ -64,6 +68,7 @@ metadata:
     role: pingfederate
     tier: engine
   name: pingfederate
+  namespace: spin-test-west
 spec:
   ports:
   - name: https
@@ -76,6 +81,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pingfederate
+  namespace: spin-test-west
   labels:
     role: pingfederate
     tier: engine
