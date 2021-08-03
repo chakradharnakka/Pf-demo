@@ -8,6 +8,6 @@ metadata:
 spec:
   containers:
     - name: sample-httpd
-      image: gcr.io/identity-pingfed-lab-ef24f2/sample-httpd:v1.0.3
+      image: gcr.io/identity-pingfed-lab-ef24f2/sample-httpd:v1.0.4
       ports:
         - containerPort: 80
