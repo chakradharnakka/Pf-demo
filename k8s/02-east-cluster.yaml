@@ -3,13 +3,13 @@ data:
   ## sample full hostname: pingdirectory-0-west.ping-devops.com
   K8S_STATEFUL_SET_NAME: pingdirectory
   K8S_STATEFUL_SET_SERVICE_NAME: pingdirectory-cluster
-  K8S_CLUSTERS: west east
-  K8S_CLUSTER: east
-  K8S_SEED_CLUSTER: west
+  K8S_CLUSTERS: spin-test-east spin-test-west
+  K8S_CLUSTER: spin-test-west
+  K8S_SEED_CLUSTER: spin-test-east
   K8S_NUM_REPLICAS: "3"
   K8S_POD_HOSTNAME_PREFIX: pingdirectory-
-  K8S_POD_HOSTNAME_SUFFIX:  .east.svc.clusterset.local
-  K8S_SEED_HOSTNAME_SUFFIX:  .west.svc.clusterset.local
+  K8S_POD_HOSTNAME_SUFFIX:  .spin-test-west.svc.clusterset.local
+  K8S_SEED_HOSTNAME_SUFFIX:  .spin-test-east.svc.clusterset.local
   K8S_INCREMENT_PORTS: "false"
   REPLICATION_PORT: "8989"
   LDAP_PORT: "7389"
@@ -26,7 +26,7 @@ data:
 kind: ConfigMap
 metadata:
   annotations: {}
-  namespace: east
+  namespace: spin-test-west
   labels:
     role: pingdirectory
   name: pingdirectory-environment-variables
@@ -36,7 +36,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: devops-secret
-  namespace: east
+  namespace: spin-test-west
   annotations:
     ping-devops.user: vitalii_kalinichenko@epam.com
     ping-devops.app-version: v0.7.3
@@ -49,7 +49,7 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: east
+  namespace: spin-test-west
   labels:
     role: pingdirectory
   name: pingdirectory
@@ -69,14 +69,14 @@ apiVersion: net.gke.io/v1
 kind: ServiceExport
 metadata:
   name: pingdirectory
-  namespace: east
+  namespace: spin-test-west
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: east
+  namespace: spin-test-west
   annotations: 
-    external-dns.alpha.kubernetes.io/hostname: "pingdirectory-0-east.ping-devops.com"
+    external-dns.alpha.kubernetes.io/hostname: "pingdirectory-0-spin-test-west.ping-devops.com"
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
   labels:
     role: pingdirectory
@@ -98,15 +98,15 @@ apiVersion: net.gke.io/v1
 kind: ServiceExport
 metadata:
   name: pingdirectory-0
-  namespace: east
+  namespace: spin-test-west
 ---
 apiVersion: v1
 kind: Service
 metadata:
   annotations: 
-    external-dns.alpha.kubernetes.io/hostname: "pingdirectory-1-east.ping-devops.com"
+    external-dns.alpha.kubernetes.io/hostname: "pingdirectory-1-spin-test-west.ping-devops.com"
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
-  namespace: east
+  namespace: spin-test-west
   labels:
     role: pingdirectory
   name: pingdirectory-1
@@ -127,15 +127,15 @@ apiVersion: net.gke.io/v1
 kind: ServiceExport
 metadata:
   name: pingdirectory-1
-  namespace: east
+  namespace: spin-test-west
 ---
 apiVersion: v1
 kind: Service
 metadata:
   annotations: 
-    external-dns.alpha.kubernetes.io/hostname: "pingdirectory-2-east.ping-devops.com"
+    external-dns.alpha.kubernetes.io/hostname: "pingdirectory-2-spin-test-west.ping-devops.com"
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
-  namespace: east
+  namespace: spin-test-west
   labels:
     role: pingdirectory
   name: pingdirectory-2
@@ -157,12 +157,12 @@ apiVersion: net.gke.io/v1
 kind: ServiceExport
 metadata:
   name: pingdirectory-2
-  namespace: east
+  namespace: spin-test-west
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: east
+  namespace: spin-test-west
   labels:
     role: pingdirectory
   name: pingdirectory-cluster
@@ -178,12 +178,12 @@ apiVersion: net.gke.io/v1
 kind: ServiceExport
 metadata:
   name: pingdirectory-cluster
-  namespace: east
+  namespace: spin-test-west
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  namespace: east
+  namespace: spin-test-west
   labels:
     role: pingdirectory
   name: pingdirectory
@@ -256,7 +256,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: east
+  namespace: spin-test-west
   labels:
     role: pingdataconsole
   name: pingdataconsole
@@ -271,7 +271,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: east
+  namespace: spin-test-west
   labels:
     role: pingdataconsole
   name: pingdataconsole-http
@@ -286,7 +286,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: east
+  namespace: spin-test-west
   labels:
     role: pingdataconsole
   name: pingdataconsole
